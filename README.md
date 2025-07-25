@@ -49,7 +49,7 @@ A responsive web application that displays current weather conditions and 5-day 
   - LocalStorage for recent searches
   - Web Animations API
     
-  ## 🚀 Installation & Setup
+## 🚀 Installation & Setup
 
 - **Clone the repository**
    ```bash
