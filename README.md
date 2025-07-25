@@ -48,7 +48,8 @@ A responsive web application that displays current weather conditions and 5-day 
   - Git/GitHub for version control
   - LocalStorage for recent searches
   - Web Animations API
-  - ## 🚀 Installation & Setup
+    
+  ## 🚀 Installation & Setup
 
 - **Clone the repository**
    ```bash
