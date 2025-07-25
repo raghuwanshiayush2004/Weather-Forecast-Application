@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Meta tags for character set and responsive viewport -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Forecast</title>
+    
+    <!-- Favicon Link -->
+    <link rel="shortcut icon" href="./resources/favicon icon.jpeg" type="image/x-icon">
+    
+    <!-- External CSS Link -->
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Font Awesome CDN Link for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- Google Font - Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN with custom configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Tailwind configuration with custom colors, shadows, and animations
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1E40AF',
+                        secondary: '#1E3A8A',
+                        accent: '#3B82F6',
+                        dark: '#1F2937',
+                        light: '#F3F4F6',
+                    },
+                    boxShadow: {
+                        'card': '0 4px 20px rgba(0, 0, 0, 0.1)',
+                        'btn': '0 4px 6px rgba(0, 0, 0, 0.1)',
+                    },
+                    animation: {
+                        'fade-in-down': 'fadeInDown 0.5s ease-out',
+                        'fade-out-up': 'fadeOutUp 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeInDown: {
+                            '0%': { opacity: '0', transform: 'translateY(-20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        fadeOutUp: {
+                            '0%': { opacity: '1', transform: 'translateY(0)' },
+                            '100%': { opacity: '0', transform: 'translateY(-20px)' },
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<!-- Body with gradient background and minimum height to cover viewport -->
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen">
+    <!-- Main container with responsive padding and max width -->
+    <main class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Main heading -->
+        <h1 class="text-3xl font-bold text-center text-primary mb-8">Weather Forecast</h1>
+
+        <!-- Search Section -->
+        <section class="bg-white rounded-xl shadow-card p-6 mb-8">
+            <div class="flex flex-col md:flex-row gap-4">
+                <!-- Search input field with location icon -->
+                <div class="relative flex-grow">
+                    <input type="text" placeholder="Enter City Name" autocomplete="off"
+                        class="location-input w-full border-2 border-gray-200 rounded-full py-3 px-6 pr-12 focus:outline-none focus:border-accent transition-all">
+                    <i class="fa-solid fa-location-dot absolute right-4 top-4 text-gray-400"></i>
+                </div>
+                <!-- Action buttons -->
+                <div class="flex gap-2">
+                    <!-- Search button -->
+                    <button
+                        class="location-search bg-accent hover:bg-primary text-white rounded-full px-6 py-3 flex items-center gap-2 transition-all shadow-btn">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span class="hidden sm:inline">Search</span>
+                    </button>
+                    <!-- Current location button -->
+                    <button title="Search for Current Location"
+                        class="track-location bg-secondary hover:bg-primary text-white rounded-full px-4 py-3 flex items-center gap-2 transition-all shadow-btn">
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                        <span class="hidden sm:inline">Current</span>
+                    </button>
+                    <!-- Temperature unit toggle button -->
+                    <button id="toggle-unit-btn"
+                        class="bg-accent hover:bg-primary text-white rounded-full px-4 py-3 text-sm font-medium transition-colors shadow-btn">
+                        Switch to Fahrenheit
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main content area with responsive layout -->
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Main Weather Section (hidden by default) -->
+            <section class="main-weather-section hidden bg-white rounded-xl shadow-card p-6 lg:w-1/3">
+                <div class="flex flex-col items-center">
+                    <!-- Weather icon image -->
+                    <img alt="Weather Icon" class="location-weather-image w-48 my-6">
+                    <div class="text-center">
+                        <!-- Location name -->
+                        <p class="location-name text-3xl font-bold text-dark mb-2"></p>
+                        <div class="flex justify-between items-center mb-4">
+                            <!-- Temperature -->
+                            <p class="location-temp text-4xl font-bold text-primary"></p>
+                            <!-- Date and time -->
+                            <p class="location-date-time text-gray-600"></p>
+                        </div>
+                        <!-- Weather description -->
+                        <p class="location-weather-description text-xl text-gray-700"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Weather Details Section -->
+            <section class="flex-grow">
+                <!-- Recent Searches & Extended Forecast header -->
+                <div class="flex flex-col sm:flex-row justify-between gap-4 mb-6">
+                    <!-- Recent Search Dropdown (hidden by default) -->
+                    <div class="recent-search-dropdown-container group relative hidden">
+                        <button
+                            class="recent-search-heading cursor-pointer bg-primary hover:bg-secondary text-white rounded-lg px-6 py-3 flex items-center gap-2 transition-all shadow-btn w-full sm:w-auto">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                            <span>Recent Searches</span>
+                        </button>
+                        <!-- Dropdown content -->
+                        <div
+                            class="recent-search-dropdown hidden group-hover:block absolute top-full mt-1 w-full bg-white shadow-card rounded-lg z-10 overflow-hidden">
+                            <!-- Recent searches will be dynamically added here -->
+                        </div>
+                    </div>
+
+                    <!-- Extended Forecast Button (hidden by default) -->
+                    <button
+                        class="extended-forecast-heading hidden bg-primary hover:bg-secondary text-white rounded-lg px-6 py-3 flex items-center gap-2 transition-all shadow-btn w-full sm:w-auto">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span>5-Day Forecast</span>
+                    </button>
+                </div>
+
+                <!-- Extended Weather Forecast Container -->
+                <div
+                    class="extended-forecast-container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+                    <!-- 5-day forecast cards will be dynamically added here -->
+                </div>
+
+                <!-- Today's Highlights Section -->
+                <section class="bg-white rounded-xl shadow-card p-6">
+                    <!-- Section heading (hidden by default) -->
+                    <h2 class="other-weather-details-section-heading hidden text-2xl font-bold text-dark mb-6">Today's
+                        Highlights</h2>
+                    <!-- Weather details grid -->
+                    <div class="other-weather-section grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Weather details cards will be dynamically added here -->
+                    </div>
+                </section>
+            </section>
+        </div>
+
+        <!-- Initial State (shown when no city is searched) -->
+        <div class="no-city-entered flex min-h-[50vh] justify-center items-center">
+            <div class="text-center">
+                <i class="fas fa-cloud-sun text-8xl text-gray-300 mb-4"></i>
+                <p class="text-gray-400 text-2xl font-bold">Search for a location to see weather</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- External JavaScript file (loaded deferred) -->
+    <script src="script.js" defer></script>
+</body>
+
+</html>
