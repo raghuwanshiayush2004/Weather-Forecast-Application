@@ -48,3 +48,9 @@ A responsive web application that displays current weather conditions and 5-day 
   - Git/GitHub for version control
   - LocalStorage for recent searches
   - Web Animations API
+  - ## 🚀 Installation & Setup
+
+- **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/weather-forecast-app.git
+   cd weather-forecast-app
